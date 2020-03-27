@@ -1,4 +1,4 @@
-class CreateDynamicSeo < ActiveRecord::Migration
+class CreateDynamicSeo < ActiveRecord::Migration[5.2]
   def self.up
     create_table :dynamic_seo do |t|
       t.column :seoable_type, :string, null: false

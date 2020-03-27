@@ -2,7 +2,7 @@
 require 'rails/generators'
 require 'rails/generators/migration'
 
-module ActAsSeoable
+module ActsAsSeoable
   module Generators
     class MigrateGenerator < ::Rails::Generators::Base
       include Rails::Generators::Migration

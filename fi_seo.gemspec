@@ -1,4 +1,4 @@
-require_relative 'lib/fi_seo/version'
+require_relative 'lib/acts_as_seoable/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'fi_seo'
