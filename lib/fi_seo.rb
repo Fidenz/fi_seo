@@ -12,17 +12,16 @@ module FiSeo
 
   module ClassMethods
 
-    def acts_as_seoable(title, description, keywords)
+    def acts_as_seoable(title, description, keywords, _options = {})
       extend  ActsAsSeoableClassMethods
       include ActsAsSeoableInstanceMethods
 
-      class_attribute :seoable_title
-      class_attribute :seoable_description
-      class_attribute :seoable_keywords
+      attr_names = [title, description, keywords]
+      configuration = { check_for_changes: true, conditions: 'true' }
+      configuration[:fields] = attr_names.flatten.uniq.compact
 
-      self.seoable_title = title
-      self.seoable_description = description
-      self.seoable_keywords = keywords
+      class_attribute :seoable_options
+      self.seoable_options = configuration
 
       self.send('after_create', :create_dynamic_seo_record)
       self.send('after_update', :update_dynamic_seo_record)
@@ -36,39 +35,40 @@ module FiSeo
 
   module ActsAsSeoableClassMethods
 
-    def seoable_title
-      seoable_title
-    end
-
-    def seoable_description
-      seoable_description
-    end
-
-    def seoable_keywords
-      seoable_keywords
+    def seoable_fields
+      self.seoable_options[:fields]
     end
   end
 
   module ActsAsSeoableInstanceMethods
 
     def create_dynamic_seo_record
-      DynamicSeo.create(seoable_type: self.class.to_s, seoable_id: id, title: self.seoable_title,
-                        description: self.seoable_description, keywords: self.seoable_keywords)
+      DynamicSeo.create(seoable_type: self.class.to_s, seoable_id: id, title: self.title_value,
+                        description: self.description_value, keywords: self.keywords_value)
     end
 
     def update_dynamic_seo_record
-      if self.seoable_title.present?
+      if self.class.seoable_options[:check_for_changes]
         row = DynamicSeo.find_by_seoable_type_and_seoable_id(self.class.to_s, self.id)
         if row.nil?
           self.create_dynamic_seo_record
         else
           DynamicSeo.where(seoable_type: self.class.to_s).where(seoable_id: self.id)
-                    .update_all(title: self.seoable_title, description: self.seoable_description, keywords: self.seoable_keywords)
+                    .update_all(title: self.title_value, description: self.description_value, keywords: self.keywords_value)
         end
-      else
-        row = DynamicSeo.find_by_seoable_type_and_seoable_id(self.class.to_s, self.id)
-        row&.destroy
       end
+    end
+
+    def title_value
+      self.send(self.class.seoable_fields.first)
+    end
+
+    def description_value
+      self.send(self.class.seoable_fields.second)
+    end
+
+    def keywords_value
+      self.send(self.class.seoable_fields.third)
     end
   end
 end

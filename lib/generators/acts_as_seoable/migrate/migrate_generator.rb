@@ -15,7 +15,7 @@ module ActsAsSeoable
 
       def copy_migrations
         migration_template 'migration.rb',
-                           'db/migrate/create_dynamic_seo.rb'
+                           'db/migrate/create_dynamic_seos.rb'
       end
     end
   end
