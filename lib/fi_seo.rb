@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'meta-tags'
+
 require 'acts_as_seoable/version'
 require 'active_record'
 require 'active_record/version'
@@ -26,7 +28,9 @@ module FiSeo
                         nofollow: false,
                         follow: false,
                         noarchive: false,
-                        social: false }
+                        social: false,
+                        separator: '&#124;',
+                        canonical: false }
       configuration.update(_options) if _options.present?
       configuration[:fields] = attr_names.flatten.uniq.compact
 
@@ -52,7 +56,7 @@ module FiSeo
 
   module ActsAsSeoableInstanceMethods
 
-    def to_meta_tags(_params = {})
+    def to_meta_tags
       row = DynamicSeo.find_by_seoable_type_and_seoable_id(self.class.to_s, self.id)
       unless row.nil?
         hash = {
@@ -65,7 +69,8 @@ module FiSeo
           noindex: self.class.seoable_options[:noindex],
           follow: self.class.seoable_options[:follow],
           nofollow: self.class.seoable_options[:nofollow],
-          noarchive: self.class.seoable_options[:noarchive]
+          noarchive: self.class.seoable_options[:noarchive],
+          separator: self.class.seoable_options[:separator].html_safe
         }
 
         if self.class.seoable_options[:social].present?
@@ -75,6 +80,9 @@ module FiSeo
           if self.class.seoable_options[:social].include? :twitter
             hash.merge!(twitter: twitter_tags)
           end
+        end
+        if self.class.seoable_options[:canonical].present?
+          hash.merge!(canonical: canonical_url)
         end
         return hash
       end
@@ -113,6 +121,10 @@ module FiSeo
         card: '',
         site: ''
       }
+    end
+
+    def canonical_url
+      ''
     end
 
     def title_value
