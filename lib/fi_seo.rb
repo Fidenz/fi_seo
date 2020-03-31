@@ -42,6 +42,17 @@ module FiSeo
 
   module ActsAsSeoableInstanceMethods
 
+    def to_meta_tags
+      row = DynamicSeo.find_by_seoable_type_and_seoable_id(self.class.to_s, self.id)
+      unless row.nil?
+        return hash = {
+          title: row.title,
+          description: row.description,
+          keywords: row.keywords
+      }
+      end
+    end
+
     def create_dynamic_seo_record
       DynamicSeo.create(seoable_type: self.class.to_s, seoable_id: id, title: self.title_value,
                         description: self.description_value, keywords: self.keywords_value)
