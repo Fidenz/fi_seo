@@ -17,7 +17,16 @@ module FiSeo
       include ActsAsSeoableInstanceMethods
 
       attr_names = [title, description, keywords]
-      configuration = { check_for_changes: true, conditions: 'true' }
+      configuration = { check_for_changes: true,
+                        reverse: false,
+                        lowercase: false,
+                        index: false,
+                        noindex: false,
+                        nofollow: false,
+                        follow: false,
+                        noarchive: false,
+                        social: false }
+      configuration.update(_options) if _options.present?
       configuration[:fields] = attr_names.flatten.uniq.compact
 
       class_attribute :seoable_options
@@ -42,16 +51,35 @@ module FiSeo
 
   module ActsAsSeoableInstanceMethods
 
-    def to_meta_tags
+    def to_meta_tags(_params = {})
       row = DynamicSeo.find_by_seoable_type_and_seoable_id(self.class.to_s, self.id)
       unless row.nil?
-        return hash = {
+        hash = {
           title: row.title,
           description: row.description,
-          keywords: row.keywords
-      }
+          keywords: row.keywords,
+          lowercase: self.class.seoable_options[:lowercase],
+          reverse: self.class.seoable_options[:reverse],
+          index: self.class.seoable_options[:index],
+          noindex: self.class.seoable_options[:noindex],
+          follow: self.class.seoable_options[:follow],
+          nofollow: self.class.seoable_options[:nofollow],
+          noarchive: self.class.seoable_options[:noarchive]
+        }
+
+        if self.class.seoable_options[:social].present?
+          if self.class.seoable_options[:social].include? :facebook
+            hash.merge!(og: facebook_tags)
+          end
+          if self.class.seoable_options[:social].include? :twitter
+            hash.merge!(twitter: twitter_tags)
+          end
+        end
+        return hash
       end
     end
+
+
 
     def create_dynamic_seo_record
       DynamicSeo.create(seoable_type: self.class.to_s, seoable_id: id, title: self.title_value,
@@ -68,6 +96,22 @@ module FiSeo
                     .update_all(title: self.title_value, description: self.description_value, keywords: self.keywords_value)
         end
       end
+    end
+
+    def facebook_tags
+      {
+        title: '',
+        type: '',
+        url: '',
+        image: ''
+      }
+    end
+
+    def twitter_tags
+      {
+        card: '',
+        site: ''
+      }
     end
 
     def title_value
