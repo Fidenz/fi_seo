@@ -4,6 +4,7 @@ require 'acts_as_seoable/version'
 require 'active_record'
 require 'active_record/version'
 require 'active_support/core_ext/module'
+require 'active_support/core_ext/hash'
 require 'generators/acts_as_seoable/migrate/migrate_generator'
 require 'acts_as_seoable/dynamic_seo'
 
