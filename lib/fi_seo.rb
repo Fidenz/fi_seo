@@ -14,7 +14,7 @@ require 'acts_as_seoable/helpers/static_helper'
 
 module FiSeo
   extend ActiveSupport::Concern
-  extend StaticRoutes
+  extend ActsAsSeoableStaticClassMethods
 
   module ClassMethods
 
