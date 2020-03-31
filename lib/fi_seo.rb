@@ -9,9 +9,12 @@ require 'active_support/core_ext/module'
 require 'active_support/core_ext/hash'
 require 'generators/acts_as_seoable/migrate/migrate_generator'
 require 'acts_as_seoable/dynamic_seo'
+require 'acts_as_seoable/static_seo'
+require 'acts_as_seoable/helpers/static_helper'
 
 module FiSeo
   extend ActiveSupport::Concern
+  extend StaticRoutes
 
   module ClassMethods
 
@@ -58,7 +61,9 @@ module FiSeo
 
     def to_meta_tags
       row = DynamicSeo.find_by_seoable_type_and_seoable_id(self.class.to_s, self.id)
-      unless row.nil?
+      if row.nil?
+        {}
+      else
         hash = {
           title: row.title,
           description: row.description,
@@ -84,7 +89,7 @@ module FiSeo
         if self.class.seoable_options[:canonical].present?
           hash.merge!(canonical: canonical_url)
         end
-        return hash
+        hash
       end
     end
 
