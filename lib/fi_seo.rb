@@ -16,6 +16,40 @@ module FiSeo
   extend ActiveSupport::Concern
   extend ActsAsSeoableStaticClassMethods
 
+  class << self
+    attr_accessor :initialized_config
+  end
+
+  def self.configure
+    self.initialized_config ||= Configuration.new
+    yield(initialized_config)
+  end
+
+  class Configuration
+    attr_accessor :default_facebook_title
+    attr_accessor :default_facebook_url
+    attr_accessor :default_facebook_type
+    attr_accessor :default_facebook_image
+    attr_accessor :default_twitter_card
+    attr_accessor :default_twitter_site
+    attr_accessor :default_twitter_title
+    attr_accessor :default_twitter_description
+    attr_accessor :default_twitter_image
+
+    def initialize
+      @default_facebook_title = ''
+      @default_facebook_url = ''
+      @default_facebook_type = ''
+      @default_facebook_image = ''
+      @default_twitter_card = ''
+      @default_twitter_site = ''
+      @default_twitter_title = ''
+      @default_twitter_description = ''
+      @default_twitter_image = ''
+
+    end
+  end
+
   module ClassMethods
 
     def acts_as_seoable(title, description, keywords, _options = {})
@@ -114,17 +148,20 @@ module FiSeo
 
     def facebook_tags
       {
-        title: '',
-        type: '',
-        url: '',
-        image: ''
+        title: FiSeo.initialized_config.default_facebook_title,
+        type: FiSeo.initialized_config.default_facebook_type,
+        url: FiSeo.initialized_config.default_facebook_url,
+        image: FiSeo.initialized_config.default_facebook_image
       }
     end
 
     def twitter_tags
       {
-        card: '',
-        site: ''
+        card: FiSeo.initialized_config.default_twitter_card,
+        site: FiSeo.initialized_config.default_twitter_site,
+        title: FiSeo.initialized_config.default_twitter_title,
+        type: FiSeo.initialized_config.default_twitter_description,
+        image: FiSeo.initialized_config.default_twitter_image
       }
     end
 
