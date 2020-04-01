@@ -10,6 +10,8 @@ require 'active_support/core_ext/hash'
 require 'generators/acts_as_seoable/migrate/migrate_generator'
 require 'acts_as_seoable/dynamic_seo'
 require 'acts_as_seoable/static_seo'
+require 'acts_as_seoable/google_analytic_seo'
+require 'acts_as_seoable/engine'
 require 'acts_as_seoable/helpers/static_helper'
 
 module FiSeo

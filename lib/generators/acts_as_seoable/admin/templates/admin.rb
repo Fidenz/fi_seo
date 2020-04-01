@@ -72,3 +72,44 @@ ActiveAdmin.register DynamicSeo do
     end
   end
 end
+
+ActiveAdmin.register GoogleAnalyticSeo do
+  menu label: 'Google Analytics', priority: 3, parent: 'SEOData'
+  config.filters = false
+  actions :all, except: %i[destroy new]
+
+  show do
+    attributes_table do
+      row 'Title' do |google_analytic|
+        google_analytic.title.titleize
+      end
+      row :content
+      row :created_at
+      row :updated_at
+    end
+  end
+
+  index title: 'Google Analytics' do
+    column 'Title' do |google_analytic|
+      google_analytic.title.titleize
+    end
+    column :content
+    column :created_at
+    column :updated_at
+    actions
+  end
+
+  form do |f|
+    f.inputs do
+      f.input :title, input_html: { readonly: true }
+      f.input :content
+    end
+    f.actions
+  end
+
+  controller do
+    def permitted_params
+      params.permit!
+    end
+  end
+end

@@ -31,6 +31,15 @@ class CreateSeoTables < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
+    create_table :google_analytic_seos do |t|
+      t.string :title, null: false
+      t.string :content, null: false, default: ''
+
+      t.timestamps
+    end
+
+    GoogleAnalyticSeo.create(title: 'analytic id', content: '')
+
     add_index :dynamic_seos, %i[seoable_type seoable_id], unique: true
     add_index :static_seos, %i[seoable_controller seoable_action], unique: true
   end
@@ -38,5 +47,6 @@ class CreateSeoTables < ActiveRecord::Migration[5.2]
   def self.down
     drop_table :dynamic_seos
     drop_table :static_seos
+    drop_table :google_analytic_seos
   end
 end
