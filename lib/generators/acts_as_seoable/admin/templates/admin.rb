@@ -4,17 +4,28 @@ ActiveAdmin.register_page 'SEOData' do
 end
 
 ActiveAdmin.register StaticSeo do
-  menu label: 'Static Pages', priority: 2, parent: 'SEOData'
+  menu label: 'Static Pages', priority: 1, parent: 'SEOData'
   config.filters = false
   actions :all, except: %i[destroy new]
 
-  show do
+  show title: proc { |static_seo| "#{static_seo.seoable_controller.titleize} - #{static_seo.seoable_action.titleize}" } do
     attributes_table do
       row('Controller', &:seoable_controller)
       row('Action', &:seoable_action)
       row :title
       row :description
       row :keywords
+      row :status
+      row :facebook_title
+      row :facebook_url
+      row :facebook_type
+      row :facebook_image
+      row :facebook_description
+      row :twitter_title
+      row :twitter_card
+      row :twitter_site
+      row :twitter_image
+      row :twitter_description
       row :created_at
       row :updated_at
     end
@@ -33,6 +44,28 @@ ActiveAdmin.register StaticSeo do
     actions
   end
 
+  form do |f|
+    f.inputs do
+      f.input :seoable_controller, input_html: { readonly: true }
+      f.input :seoable_action, input_html: { readonly: true }
+      f.input :title
+      f.input :description
+      f.input :keywords
+      f.input :status
+      f.input :facebook_title
+      f.input :facebook_url
+      f.input :facebook_type
+      f.input :facebook_image
+      f.input :facebook_description
+      f.input :twitter_title
+      f.input :twitter_card
+      f.input :twitter_site
+      f.input :twitter_image
+      f.input :twitter_description
+    end
+    f.actions
+  end
+
   controller do
     def permitted_params
       params.permit!
@@ -41,9 +74,9 @@ ActiveAdmin.register StaticSeo do
 end
 
 ActiveAdmin.register DynamicSeo do
-  menu label: 'Dynamic Pages', priority: 1, parent: 'SEOData'
+  menu label: 'Dynamic Pages', priority: 2, parent: 'SEOData'
   config.filters = false
-  actions :all, except: %i[destroy new]
+  actions :all, except: %i[destroy new edit]
 
   show do
     attributes_table do
@@ -78,7 +111,7 @@ ActiveAdmin.register GoogleAnalyticSeo do
   config.filters = false
   actions :all, except: %i[destroy new]
 
-  show do
+  show title: proc { |google_analytic| "#{google_analytic.title.titleize}" } do
     attributes_table do
       row 'Title' do |google_analytic|
         google_analytic.title.titleize
