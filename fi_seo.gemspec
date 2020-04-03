@@ -24,4 +24,5 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'activerecord', '~> 5.0', '>= 5.0.0.1'
   spec.add_runtime_dependency('meta-tags', '~> 2.13')
+  spec.add_runtime_dependency 'xml-sitemap', '~> 1.3', '>= 1.3.3'
 end

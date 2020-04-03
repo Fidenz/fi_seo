@@ -31,6 +31,16 @@ class CreateSeoTables < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
+    create_table :sitemap_seos do |t|
+      t.string :sitemap_controller, null: false
+      t.string :sitemap_action, null: false
+      t.boolean :status, null: false
+      t.decimal :priority, null: false, default: 1
+      t.integer :interval, null: false, default: 0
+
+      t.timestamps
+    end
+
     create_table :google_analytic_seos do |t|
       t.string :title, null: false
       t.string :content, null: false, default: ''
@@ -39,14 +49,17 @@ class CreateSeoTables < ActiveRecord::Migration[5.2]
     end
 
     GoogleAnalyticSeo.create(title: 'analytic id', content: '')
+    SitemapSeo.create(sitemap_controller: 'host', sitemap_action: 'host', status: true)
 
     add_index :dynamic_seos, %i[seoable_type seoable_id], unique: true
     add_index :static_seos, %i[seoable_controller seoable_action], unique: true
+    add_index :sitemap_seos, %i[sitemap_controller sitemap_action], unique: true
   end
 
   def self.down
     drop_table :dynamic_seos
     drop_table :static_seos
+    drop_table :sitemap_seos
     drop_table :google_analytic_seos
   end
 end

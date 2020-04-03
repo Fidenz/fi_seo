@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'meta-tags'
+require 'xml-sitemap'
 
 require 'acts_as_seoable/version'
 require 'active_record'
@@ -11,11 +12,14 @@ require 'generators/acts_as_seoable/migrate/migrate_generator'
 require 'acts_as_seoable/dynamic_seo'
 require 'acts_as_seoable/static_seo'
 require 'acts_as_seoable/google_analytic_seo'
+require 'acts_as_seoable/sitemap_seo'
 require 'acts_as_seoable/engine'
 require 'acts_as_seoable/helpers/static_helper'
+require 'acts_as_seoable/helpers/sitemap_helper'
 
 module FiSeo
   extend ActiveSupport::Concern
+  extend SitemapClassMethods
   extend ActsAsSeoableStaticClassMethods
 
   class << self
@@ -61,7 +65,7 @@ module FiSeo
     def acts_as_seoable(title, description, keywords, _options = {})
       extend  ActsAsSeoableClassMethods
       include ActsAsSeoableInstanceMethods
-
+      
       attr_names = [title, description, keywords]
       configuration = { check_for_changes: true,
                         reverse: false,

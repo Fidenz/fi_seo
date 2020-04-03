@@ -106,8 +106,62 @@ ActiveAdmin.register DynamicSeo do
   end
 end
 
+ActiveAdmin.register SitemapSeo do
+  menu label: 'Sitemap Seo', priority: 3, parent: 'SEOData'
+  config.filters = false
+  actions :all, except: %i[destroy new]
+
+  show title: proc { |sitemap_seo| "#{sitemap_seo.sitemap_controller.titleize} - #{sitemap_seo.sitemap_action.titleize}" } do
+    attributes_table do
+      row('Controller', &:sitemap_controller)
+      row('Action', &:sitemap_action)
+      row :priority
+      row 'Interval' do |sitemap_seo|
+        sitemap_seo.interval.titleize
+      end
+      row :status
+      row :created_at
+      row :updated_at
+    end
+  end
+
+  index title: 'Sitemap Seo' do
+    column 'Controller' do |sitemap_seo|
+      sitemap_seo.sitemap_controller.titleize
+    end
+    column 'Action' do |sitemap_seo|
+      sitemap_seo.sitemap_action.titleize
+    end
+    column :priority
+    column 'Interval' do |sitemap_seo|
+      sitemap_seo.interval.titleize
+    end
+    column :status
+    column :created_at
+    column :updated_at
+    actions
+  end
+
+  form do |f|
+    f.inputs do
+      f.input :sitemap_controller, input_html: { readonly: true }
+      f.input :sitemap_action, input_html: { readonly: true }
+      f.input :priority
+      f.input :interval, as: :select, collection: SitemapSeo.intervals.keys.map {|e|[e.titleize, e]}
+      f.input :status
+    end
+    f.actions
+  end
+
+  controller do
+    def permitted_params
+      params.permit!
+    end
+  end
+end
+
 ActiveAdmin.register GoogleAnalyticSeo do
-  menu label: 'Google Analytics', priority: 3, parent: 'SEOData'
+  menu label: 'Google Analytics', priority: 4, parent: 'SEOData'
   config.filters = false
   actions :all, except: %i[destroy new]
 
