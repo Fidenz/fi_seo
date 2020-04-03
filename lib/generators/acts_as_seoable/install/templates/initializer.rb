@@ -14,4 +14,6 @@ FiSeo.configure do |config|
   # config.default_twitter_description = ''
   #
   # config.default_canonical_url = ''
+  #
+  # config.sitemap_host_url = 'www.domain.com'
 end

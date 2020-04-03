@@ -116,8 +116,8 @@ ActiveAdmin.register SitemapSeo do
       row('Controller', &:sitemap_controller)
       row('Action', &:sitemap_action)
       row :priority
-      row 'Interval' do |sitemap_seo|
-        sitemap_seo.interval.titleize
+      row 'Period' do |sitemap_seo|
+        sitemap_seo.period.titleize
       end
       row :status
       row :created_at
@@ -125,7 +125,22 @@ ActiveAdmin.register SitemapSeo do
     end
   end
 
+  batch_action :active do |ids|
+    batch_action_collection.find(ids).each do |sitemap_seo|
+      sitemap_seo.update status: true
+    end
+    redirect_to collection_path, alert: 'The sitemap seos have been activated.'
+  end
+
+  batch_action :inactive do |ids|
+    batch_action_collection.find(ids).each do |sitemap_seo|
+      sitemap_seo.update status: false
+    end
+    redirect_to collection_path, alert: 'The sitemap seos have been deactivated.'
+  end
+
   index title: 'Sitemap Seo' do
+    selectable_column
     column 'Controller' do |sitemap_seo|
       sitemap_seo.sitemap_controller.titleize
     end
@@ -133,8 +148,8 @@ ActiveAdmin.register SitemapSeo do
       sitemap_seo.sitemap_action.titleize
     end
     column :priority
-    column 'Interval' do |sitemap_seo|
-      sitemap_seo.interval.titleize
+    column 'Period' do |sitemap_seo|
+      sitemap_seo.period.titleize
     end
     column :status
     column :created_at
@@ -147,7 +162,7 @@ ActiveAdmin.register SitemapSeo do
       f.input :sitemap_controller, input_html: { readonly: true }
       f.input :sitemap_action, input_html: { readonly: true }
       f.input :priority
-      f.input :interval, as: :select, collection: SitemapSeo.intervals.keys.map {|e|[e.titleize, e]}
+      f.input :period, as: :select, collection: SitemapSeo.periods.keys.map {|e|[e.titleize, e]}
       f.input :status
     end
     f.actions

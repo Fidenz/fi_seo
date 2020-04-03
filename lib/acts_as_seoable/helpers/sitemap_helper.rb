@@ -8,7 +8,8 @@ module SitemapClassMethods
     row_routes = Array.new
 
     routes.each do |route|
-      next if route.defaults[:sitemap] != true
+      next if route.defaults[:sitemap] != true || route.verb != 'GET'
+
       row = SitemapSeo.find_by_sitemap_controller_and_sitemap_action(route.defaults[:controller], route.defaults[:action])
       if row.nil?
         new_row = SitemapSeo.create(sitemap_controller: route.defaults[:controller], sitemap_action: route.defaults[:action],
@@ -20,7 +21,7 @@ module SitemapClassMethods
     end
 
     SitemapSeo.all.each do |sitemap_seo|
-      next if (row_routes.include? sitemap_seo) || sitemap_seo.sitemap_controller == 'host'
+      next if row_routes.include? sitemap_seo
 
       sitemap_seo.delete
     end
