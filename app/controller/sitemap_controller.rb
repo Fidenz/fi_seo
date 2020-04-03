@@ -19,7 +19,7 @@ class SitemapController < ApplicationController
         controller = site_map_seo.sitemap_controller
         priority = site_map_seo.priority
         period = site_map_seo.period
-        
+
         if SitemapSeo.periods[period.to_sym] == 0
           period_string = 'none'
           period_sym = period_string.to_sym
@@ -29,7 +29,7 @@ class SitemapController < ApplicationController
 
         if class_names.include? controller
           p = controller.capitalize.singularize.camelize
-          if Object.const_defined?(p) && (%w[destroy update create index new].exclude? action)
+          if Object.const_defined?(p) && (%w[destroy update create index new].exclude? action) && p.constantize.any?
             p.constantize.all.each do |record|
               if %w[new create index].include? action
                 m.add(url_for(controller: controller, action: action, only_path: true),

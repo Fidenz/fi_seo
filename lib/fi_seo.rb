@@ -44,7 +44,7 @@ module FiSeo
     attr_accessor :default_twitter_description
     attr_accessor :default_canonical_url
     attr_accessor :sitemap_host_url
-    
+
     def initialize
       @default_facebook_title = ''
       @default_facebook_url = ''
@@ -67,7 +67,7 @@ module FiSeo
     def acts_as_seoable(title, description, keywords, _options = {})
       extend  ActsAsSeoableClassMethods
       include ActsAsSeoableInstanceMethods
-      
+
       attr_names = [title, description, keywords]
       configuration = { check_for_changes: true,
                         reverse: false,
