@@ -76,27 +76,16 @@ end
 ActiveAdmin.register DynamicSeo do
   menu label: 'Dynamic Pages', priority: 2, parent: 'SEOData'
   config.filters = false
-  actions :all, except: %i[destroy new edit]
-  
-  show do
-    attributes_table do
-      row('Type', &:seoable_type)
-      row('Id', &:seoable_id)
-      row :created_at
-      row :updated_at
-    end
-  end
+  actions :all, except: %i[destroy new edit show]
   
   index title: 'Dynamic SEO' do
     column 'Type' do |dynamic_seo|
       dynamic_seo.seoable_type.titleize
     end
-    column 'Id' do |dynamic_seo|
-      dynamic_seo.seoable_id
+    column 'Item Count' do |dynamic_seo|
+      DynamicSeo.where(seoable_type: dynamic_seo.seoable_type).count
     end
-    column :created_at
-    column :updated_at
-    actions defaults: false do |dynamic_seo|
+    actions defaults: true do |dynamic_seo|
       link_to('View All', "/admin/dynamic_seo_by_types?type=#{dynamic_seo.seoable_type}")
     end
   end
@@ -117,18 +106,38 @@ ActiveAdmin.register DynamicSeo, as: 'DynamicSEO By Type' do
   menu false
   config.filters = false
   actions :all, except: %i[destroy new edit]
+  config.breadcrumb = false
   
-  index  title: proc { |dynamic_seo| "Dynamic SEO - #{params[:type]}" } do
+  show do
+    attributes_table do
+      row 'Type' do |dyanamic_seo|
+        dyanamic_seo.seoable_type.titleize
+      end
+      row 'Id' do |dynamic_seo|
+        dynamic_seo.seoable_id
+      end
+      row 'Title' do |dynamic_seo|
+        dynamic_seo.title.titleize
+      end
+      row :description
+      row :keywords
+    end
+  end
+  
+  index title: proc { |dynamic_seo| "Dynamic SEO - #{params[:type]}" } do
     column 'Type' do |dynamic_seo|
       dynamic_seo.seoable_type.titleize
     end
     column 'Id' do |dynamic_seo|
       dynamic_seo.seoable_id
     end
+    column 'Title' do |dynamic_seo|
+      dynamic_seo.title.titleize
+    end
     column :created_at
     column :updated_at
-    actions defaults: true do |order|
-      link_to('Approve', '#')
+    actions defaults: false do |dynamic_seo|
+      link_to('View', "/admin/dynamic_seo_by_types/#{dynamic_seo.id}?type=#{dynamic_seo.seoable_type}")
     end
   end
   
