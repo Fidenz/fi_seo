@@ -44,6 +44,7 @@ module FiSeo
     attr_accessor :default_twitter_description
     attr_accessor :default_canonical_url
     attr_accessor :sitemap_host_url
+    attr_accessor :sitemap_enable
 
     def initialize
       @default_facebook_title = ''
@@ -58,6 +59,7 @@ module FiSeo
       @default_twitter_description = ''
       @default_canonical_url = ''
       @sitemap_host_url = 'www.domain.com'
+      @sitemap_enable = true
 
     end
   end

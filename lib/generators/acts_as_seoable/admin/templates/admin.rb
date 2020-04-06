@@ -121,6 +121,8 @@ ActiveAdmin.register DynamicSeo, as: 'DynamicSEO By Type' do
       end
       row :description
       row :keywords
+      row :created_at
+      row :updated_at
     end
   end
   

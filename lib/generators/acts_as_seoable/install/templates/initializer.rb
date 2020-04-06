@@ -16,4 +16,5 @@ FiSeo.configure do |config|
   # config.default_canonical_url = ''
   #
   # config.sitemap_host_url = 'www.domain.com'
+  # config.sitemap_enable = true
 end

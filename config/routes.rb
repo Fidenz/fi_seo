@@ -1,3 +1,7 @@
 Rails.application.routes.draw do
-  get 'sitemap' => 'sitemap#sitemap', format: true
+  sitemap_enable = false
+  sitemap_enable = true if FiSeo.initialized_config.sitemap_enable == true
+  if sitemap_enable
+    get 'sitemap' => 'sitemap#sitemap', format: true
+  end
 end
