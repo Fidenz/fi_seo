@@ -7,7 +7,7 @@ ActiveAdmin.register StaticSeo do
   menu label: 'Static Pages', priority: 1, parent: 'SEOData'
   config.filters = false
   actions :all, except: %i[destroy new]
-
+  
   show title: proc { |static_seo| "#{static_seo.seoable_controller.titleize} - #{static_seo.seoable_action.titleize}" } do
     attributes_table do
       row('Controller', &:seoable_controller)
@@ -30,7 +30,7 @@ ActiveAdmin.register StaticSeo do
       row :updated_at
     end
   end
-
+  
   index title: 'Static SEO' do
     column 'Controller' do |static_seo|
       static_seo.seoable_controller.titleize
@@ -43,7 +43,7 @@ ActiveAdmin.register StaticSeo do
     column :updated_at
     actions
   end
-
+  
   form do |f|
     f.inputs do
       f.input :seoable_controller, input_html: { readonly: true }
@@ -65,7 +65,7 @@ ActiveAdmin.register StaticSeo do
     end
     f.actions
   end
-
+  
   controller do
     def permitted_params
       params.permit!
@@ -77,7 +77,7 @@ ActiveAdmin.register DynamicSeo do
   menu label: 'Dynamic Pages', priority: 2, parent: 'SEOData'
   config.filters = false
   actions :all, except: %i[destroy new edit]
-
+  
   show do
     attributes_table do
       row('Type', &:seoable_type)
@@ -86,7 +86,7 @@ ActiveAdmin.register DynamicSeo do
       row :updated_at
     end
   end
-
+  
   index title: 'Dynamic SEO' do
     column 'Type' do |dynamic_seo|
       dynamic_seo.seoable_type.titleize
@@ -96,12 +96,49 @@ ActiveAdmin.register DynamicSeo do
     end
     column :created_at
     column :updated_at
-    actions
+    actions defaults: false do |dynamic_seo|
+      link_to('View All', "/admin/dynamic_seo_by_types?type=#{dynamic_seo.seoable_type}")
+    end
   end
-
+  
   controller do
     def permitted_params
       params.permit!
+    end
+    
+    def scoped_collection
+      arr_of_distinct_types = DynamicSeo.all.group_by(&:seoable_type).collect{|k,v| v.first}
+      DynamicSeo.where(id: arr_of_distinct_types.map(&:id))
+    end
+  end
+end
+
+ActiveAdmin.register DynamicSeo, as: 'DynamicSEO By Type' do
+  menu false
+  config.filters = false
+  actions :all, except: %i[destroy new edit]
+  
+  index  title: proc { |dynamic_seo| "Dynamic SEO - #{params[:type]}" } do
+    column 'Type' do |dynamic_seo|
+      dynamic_seo.seoable_type.titleize
+    end
+    column 'Id' do |dynamic_seo|
+      dynamic_seo.seoable_id
+    end
+    column :created_at
+    column :updated_at
+    actions defaults: true do |order|
+      link_to('Approve', '#')
+    end
+  end
+  
+  controller do
+    def permitted_params
+      params.permit!
+    end
+    
+    def scoped_collection
+      DynamicSeo.where(seoable_type: params[:type])
     end
   end
 end
@@ -110,7 +147,7 @@ ActiveAdmin.register SitemapSeo do
   menu label: 'Sitemap Seo', priority: 3, parent: 'SEOData'
   config.filters = false
   actions :all, except: %i[destroy new]
-
+  
   show title: proc { |sitemap_seo| "#{sitemap_seo.sitemap_controller.titleize} - #{sitemap_seo.sitemap_action.titleize}" } do
     attributes_table do
       row('Controller', &:sitemap_controller)
@@ -124,23 +161,8 @@ ActiveAdmin.register SitemapSeo do
       row :updated_at
     end
   end
-
-  batch_action :active do |ids|
-    batch_action_collection.find(ids).each do |sitemap_seo|
-      sitemap_seo.update status: true
-    end
-    redirect_to collection_path, alert: 'The sitemap seos have been activated.'
-  end
-
-  batch_action :inactive do |ids|
-    batch_action_collection.find(ids).each do |sitemap_seo|
-      sitemap_seo.update status: false
-    end
-    redirect_to collection_path, alert: 'The sitemap seos have been deactivated.'
-  end
-
+  
   index title: 'Sitemap Seo' do
-    selectable_column
     column 'Controller' do |sitemap_seo|
       sitemap_seo.sitemap_controller.titleize
     end
@@ -156,7 +178,7 @@ ActiveAdmin.register SitemapSeo do
     column :updated_at
     actions
   end
-
+  
   form do |f|
     f.inputs do
       f.input :sitemap_controller, input_html: { readonly: true }
@@ -167,7 +189,7 @@ ActiveAdmin.register SitemapSeo do
     end
     f.actions
   end
-
+  
   controller do
     def permitted_params
       params.permit!
@@ -179,7 +201,7 @@ ActiveAdmin.register GoogleAnalyticSeo do
   menu label: 'Google Analytics', priority: 4, parent: 'SEOData'
   config.filters = false
   actions :all, except: %i[destroy new]
-
+  
   show title: proc { |google_analytic| "#{google_analytic.title.titleize}" } do
     attributes_table do
       row 'Title' do |google_analytic|
@@ -190,7 +212,7 @@ ActiveAdmin.register GoogleAnalyticSeo do
       row :updated_at
     end
   end
-
+  
   index title: 'Google Analytics' do
     column 'Title' do |google_analytic|
       google_analytic.title.titleize
@@ -200,7 +222,7 @@ ActiveAdmin.register GoogleAnalyticSeo do
     column :updated_at
     actions
   end
-
+  
   form do |f|
     f.inputs do
       f.input :title, input_html: { readonly: true }
@@ -208,7 +230,7 @@ ActiveAdmin.register GoogleAnalyticSeo do
     end
     f.actions
   end
-
+  
   controller do
     def permitted_params
       params.permit!
