@@ -91,6 +91,7 @@ module FiSeo
       self.send('after_create', :create_dynamic_seo_record)
       self.send('after_update', :update_dynamic_seo_record)
       self.send('has_one', :dynamic_seo, as: :seoable, dependent: :delete)
+      self.send('accepts_nested_attributes_for', :dynamic_seo)
     end
   end
 
