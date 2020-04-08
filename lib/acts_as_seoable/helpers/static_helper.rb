@@ -40,7 +40,8 @@ module ActsAsSeoableStaticClassMethods
                       noarchive: false,
                       separator: '&#124;',
                       canonical: false,
-                      canonical_url: '' }
+                      canonical_url: '',
+                      social: false }
     configuration.update(_options) if _options.present?
     row = StaticSeo.find_by_seoable_controller_and_seoable_action(controller_name, action_name)
     hash = if row.nil? || (row && row.status == false)
@@ -65,6 +66,26 @@ module ActsAsSeoableStaticClassMethods
              }
              if configuration[:canonical].present?
                static_hash.merge!(canonical: configuration[:canonical_url])
+             end
+             if configuration[:social].present?
+               if configuration[:social].include? :facebook
+                 static_hash.merge!(og: {
+                   title: row.facebook_title.blank? ? '' : row.facebook_title,
+                   type: row.facebook_type.blank? ? '' : row.facebook_type,
+                   url: row.facebook_url.blank? ? '' : row.facebook_url,
+                   image: row.facebook_image.blank? ? '' : row.facebook_image,
+                   description: row.facebook_description.blank? ? '' : row.facebook_description
+                 })
+               end
+               if configuration[:social].include? :twitter
+                 static_hash.merge!(twitter: {
+                   title: row.twitter_title.blank? ? '' :  row.twitter_title,
+                   card: row.twitter_card.blank? ? '' :  row.twitter_card,
+                   site: row.twitter_site.blank? ? '' :  row.twitter_site,
+                   image: row.twitter_image.blank? ? '' :  row.twitter_image,
+                   description: row.twitter_description.blank? ? '' :  row.twitter_description
+                 })
+               end
              end
              static_hash
            end
