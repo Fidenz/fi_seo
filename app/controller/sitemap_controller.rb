@@ -27,7 +27,7 @@ class SitemapController < ApplicationController
           period_sym = period.to_sym
         end
 
-        if class_names.include? controller
+        if class_names.include? controller.pluralize
           p = controller.capitalize.singularize.camelize
           if Object.const_defined?(p) && (%w[destroy update create index new].exclude? action) && p.constantize.any?
             p.constantize.all.each do |record|
@@ -43,6 +43,9 @@ class SitemapController < ApplicationController
             m.add(url_for(controller: controller, action: action, only_path: true),
                   priority: priority, updated: Date.today, period: period_sym)
           end
+        elsif %w[destroy update create].exclude? action
+          m.add(url_for(controller: controller, action: action, only_path: true),
+                priority: priority, updated: Date.today, period: period_sym)
         end
       end
     end
