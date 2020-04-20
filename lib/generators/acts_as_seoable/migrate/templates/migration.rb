@@ -37,7 +37,8 @@ class CreateSeoTables < ActiveRecord::Migration[5.2]
       t.boolean :status, null: false
       t.decimal :priority, null: false, default: 1
       t.integer :period, null: false, default: 0
-
+      t.boolean :static, null: false, default: false
+      
       t.timestamps
     end
 

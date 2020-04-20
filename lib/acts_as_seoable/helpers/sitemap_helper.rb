@@ -9,13 +9,16 @@ module SitemapClassMethods
 
     routes.each do |route|
       next if route.defaults[:sitemap] != true || route.verb != 'GET'
-
+      
+      static = route.defaults[:static] == true
       row = SitemapSeo.find_by_sitemap_controller_and_sitemap_action(route.defaults[:controller], route.defaults[:action])
       if row.nil?
         new_row = SitemapSeo.create(sitemap_controller: route.defaults[:controller], sitemap_action: route.defaults[:action],
-                                    status: false)
+                                    status: false, static: static)
         row_routes << new_row
       else
+        row.update(static: static)
+        row.save
         row_routes << row
       end
     end
