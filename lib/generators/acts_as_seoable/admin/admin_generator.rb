@@ -9,7 +9,7 @@ module ActsAsSeoable
         if Gem.loaded_specs.has_key?('activeadmin')
           template 'admin.rb', 'app/admin/acts_as_seoable.rb'
         else
-          raise StandardError, "Could not generate activeadmin page without activeadmin installed."
+          raise StandardError, 'Could not generate activeadmin page without activeadmin installed.'
         end
       end
     end
