@@ -26,8 +26,11 @@ module FiSeo
     attr_accessor :initialized_config
   end
 
+  def self.initialized_config
+    @initialized_config ||= Configuration.new
+  end
+
   def self.configure
-    self.initialized_config ||= Configuration.new
     yield(initialized_config)
   end
 
