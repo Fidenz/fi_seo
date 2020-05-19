@@ -280,7 +280,7 @@ it in here to edit.
 
 ![activeadmin-static-seoable-frontend](./screenshots/static-pages-seoable-details.png)
 
-Above image show how the meta details has been configured from the backend of active admin. 
+Above image show how the meta details has been configured from the backend using active admin. 
 These details will appear in the frontend (inside the head tag).
 
 ![activeadmin-static-seoable-frontend](./screenshots/static-pages-seoable-frontend.png)
