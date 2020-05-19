@@ -94,7 +94,7 @@ For dynamic seoable pages you need to configure model as follows:
 acts_as_seoable :title, :description, :keywords
 ```
     
-If the model as attributes for that you need to use for the seoable attributes you can add as above. You can also build and set by method as well.
+If the model has attributes for that you need to use for the seoable attributes you can add as above. You can also build and set by method as well.
 ```ruby
 # model.rb  
  
@@ -252,6 +252,11 @@ end
 ```
 
 ## ToDo Features
+
+
+##Getting Help
+
+Got a bug and you're not sure? You're sure you have a bug, but don't know what to do next? In any case, let us know about it! The best place for letting the Contributes know about bugs or problems you're having is on the page at GitHub.
 
 ## Contributing
 
