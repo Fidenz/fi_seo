@@ -291,7 +291,7 @@ These can be changed by active admin or your backend itself.
 ## ToDo Features
 
 
-##Getting Help
+## Getting Help
 
 Got a bug and you're not sure? You're sure you have a bug, but don't know what to do next? In any case, let us know about it! The best place for letting the Contributes know about bugs or problems you're having is on the page at GitHub.
 
