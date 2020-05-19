@@ -275,12 +275,12 @@ follow dynamic pages active admin guidelines.
  
 ![activeadmin-static-seoable](./screenshots/static-pages-seoable.png)
 
-Above images show how the static routes can be configured using active admin generator. It will capture the routes and show
+Above image show how the static routes can be configured using active admin generator. It will capture the routes and show
 it in here to edit.
 
-![activeadmin-static-seoable](./screenshots/static-pages-seoable-frontend.png)
+![activeadmin-static-seoable-frontend](./screenshots/static-pages-seoable-frontend.png)
 
-Above images show how the meta tags has been rendered inside the head tag for a static page.
+Above image show how the meta tags has been rendered inside the head tag for a static page.
 These can be changed by active admin or your backend itself.
 
 ## ToDo Features
