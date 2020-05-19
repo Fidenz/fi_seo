@@ -47,7 +47,7 @@ First, add this code to your main layout:
   <%= display_meta_tags site: 'My website' %>
 </head>
 ```
-#### Options
+### Options
  These options can be used in the both static pages and dynamic pages. For examples please refer each usage guides.
   
 | Option         | Description |
