@@ -1,4 +1,4 @@
-class CreateSeoTables < ActiveRecord::Migration[5.2]
+class CreateSeoTables < ActiveRecord::Migration<%= migration_version %>
   def self.up
     create_table :dynamic_seos do |t|
       t.string :seoable_type, null: false

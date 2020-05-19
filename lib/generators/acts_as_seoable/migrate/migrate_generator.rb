@@ -14,8 +14,26 @@ module ActsAsSeoable
       end
 
       def copy_migrations
-        migration_template 'migration.rb',
-                           'db/migrate/create_seo_tables.rb'
+        migration_template 'migration.erb',
+                           'db/migrate/create_seo_tables.rb', migration_version: migration_version
+      end
+
+      private
+
+      def migration_version
+        if rails5?
+          '[4.2]'
+        elsif rails6?
+          '[6.0]'
+        end
+      end
+
+      def rails5?
+        Rails.version.start_with? '5'
+      end
+
+      def rails6?
+        Rails.version.start_with? '6'
       end
     end
   end

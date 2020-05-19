@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['info@fidenz.com', 'tech@fidenz.com', 'banura.r@fidenz.com']
 
   spec.summary       = 'Flexible SEO solution for rails projects'
-  spec.description   = 'This gem provides a easier solution to search engine optimization(SEO) in a ruby project. This will give you the seo capabilities to your static pages anddynamic pages alike with few lines of code.
+  spec.description   = 'This gem provides a easier solution to search engine optimization(SEO) in a rails project. This will give you the seo capabilities to your static pages and dynamic pages alike with few lines of code.
                         Also site maps are essential to the SEO of your web application. So this gem gives that capabilities with a feature to integrate google analytics.'
   spec.homepage      = 'https://github.com/fidenz-developer/fi-seo.git'
   spec.license       = 'MIT'
