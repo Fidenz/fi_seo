@@ -4,11 +4,12 @@ Gem::Specification.new do |spec|
   spec.name          = 'fi_seo'
   spec.version       = FiSeo::VERSION
   spec.authors       = ['Banura Randika']
-  spec.email         = ['banura.r@fidenz.com']
+  spec.email         = ['info@fidenz.com', 'banura.r@fidenz.com']
 
-  spec.summary       = 'FI_SEO summary'
-  spec.description   = 'FI_SEO description'
-  spec.homepage      = 'https://bitbucket.org/fidenz/fi_seo_ror/'
+  spec.summary       = 'Flexible SEO solution for rails projects'
+  spec.description   = 'This gem provides a easier solution to search engine optimization(SEO) in a ruby project. This will give you the seo capabilities to your static pages anddynamic pages alike with few lines of code.
+                        Also site maps are essential to the SEO of your web application. So this gem gives that capabilities with a feature to integrate google analytics.'
+  spec.homepage      = 'https://github.com/fidenz-developer/fi-seo.git'
   spec.license       = 'MIT'
   spec.required_ruby_version = Gem::Requirement.new('>= 2.3.0')
 
