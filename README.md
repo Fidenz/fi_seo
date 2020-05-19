@@ -40,13 +40,27 @@ After updating your bundle, run the migration as follows:
 
 First, add this code to your main layout:
 
-```erb
+```erbruby
 # application.html.erb
 
 <head>
   <%= display_meta_tags site: 'My website' %>
 </head>
 ```
+### Options
+ These options can be used in the both static pages and dynamic pages. For examples please refer each usage guides.
+  
+| Option         | Description |
+| -------------- | ----------- |
+| `:separator`   | text used to separate website name from page title |
+| `:lowercase`   | when true, the page name will be lowercase |
+| `:reverse`     | when true, the page and site names will be reversed |
+| `:noindex`     | add noindex meta tag; when true, 'robots' will be used; accepts a string with a robot name, or an array of strings |
+| `:index`       | add index meta tag; when true, 'robots' will be used; accepts a string with a robot name, or an array of strings |
+| `:nofollow`    | add nofollow meta tag; when true, 'robots' will be used; accepts a string with a robot name, or an array of strings |
+| `:follow`      | add follow meta tag; when true, 'robots' will be used; accepts a string with a robot name, or an array of strings |
+| `:noarchive`   | add noarchive meta tag; when true, 'robots' will be used; accepts a string with a robot name, or an array of strings |
+| `:canonical`   | add canonical link tag |
 
 ### Static Pages
 
@@ -66,6 +80,16 @@ If you ran the server after this you would not see any different. Because we nee
 
 def home
   set_meta_tags FiSeo.create_static_meta_tags(controller_name, action_name, social:%i[facebook twitter])
+end
+```
+
+If you want to include any above mention options to meta tags You do that as follows:
+
+```ruby
+# some_controller.rb
+
+def home
+  set_meta_tags FiSeo.create_static_meta_tags(controller_name, action_name, social:%i[facebook twitter], lowercase: true, noindex: true)
 end
 ```
 
@@ -94,7 +118,7 @@ For dynamic seoable pages you need to configure model as follows:
 acts_as_seoable :title, :description, :keywords
 ```
     
-If the model as attributes for that you need to use for the seoable attributes you can add as above. You can also build and set by method as well.
+If the model has attributes for that you need to use for the seoable attributes you can add as above. You can also build and set by method as well.
 ```ruby
 # model.rb  
  
@@ -106,21 +130,8 @@ end
 ```  
  when you create a new record from this model the gem will create a corresponding seoable record as well. Above values will be set as default values.
  
- #### Options
  
- For dynamic records you can have option set for the model. Those options as follows:
-      
-| Option         | Description |
-| -------------- | ----------- |
-| `:separator`   | text used to separate website name from page title |
-| `:lowercase`   | when true, the page name will be lowercase |
-| `:reverse`     | when true, the page and site names will be reversed |
-| `:noindex`     | add noindex meta tag; when true, 'robots' will be used; accepts a string with a robot name, or an array of strings |
-| `:index`       | add index meta tag; when true, 'robots' will be used; accepts a string with a robot name, or an array of strings |
-| `:nofollow`    | add nofollow meta tag; when true, 'robots' will be used; accepts a string with a robot name, or an array of strings |
-| `:follow`      | add follow meta tag; when true, 'robots' will be used; accepts a string with a robot name, or an array of strings |
-| `:noarchive`   | add noarchive meta tag; when true, 'robots' will be used; accepts a string with a robot name, or an array of strings |
-| `:canonical`   | add canonical link tag |
+For dynamic records you can have option set for the model.
 
 And here are a few examples to give you ideas.
 
@@ -128,6 +139,10 @@ And here are a few examples to give you ideas.
 # model.rb
 
 acts_as_seoable :title, :description, :keywords, social: [:facebook, :twitter], noindex: true
+
+# model.rb
+
+acts_as_seoable :title, :description, :keywords, social: [:facebook, :twitter], lowercase: true
 ```  
 
 For social tags default they are empty. It can be set by the model as follows:
@@ -251,7 +266,34 @@ form do |f|
 end
 ```
 
+### Screenshots
+
+![activeadmin-dynamic-seoable](./screenshots/dynamic-pages-seoable.png)
+
+Above image show how active admin backend let you configure the dynamic **seoable** records. To achieve this please
+follow dynamic pages active admin guidelines.
+ 
+![activeadmin-static-seoable](./screenshots/static-pages-seoable.png)
+
+Above image show how the static routes can be configured using active admin generator. It will capture the routes and show
+it in here to edit.
+
+![activeadmin-static-seoable-frontend](./screenshots/static-pages-seoable-details.png)
+
+Above image show how the meta details has been configured from the backend using active admin for a static route. 
+These details will appear in the frontend (inside the head tag).
+
+![activeadmin-static-seoable-frontend](./screenshots/static-pages-seoable-frontend.png)
+
+Above image show how the meta tags has been rendered inside the head tag for a static page.
+These can be changed by active admin or your backend itself.
+
 ## ToDo Features
+
+
+## Getting Help
+
+Got a bug and you're not sure? You're sure you have a bug, but don't know what to do next? In any case, let us know about it! The best place for letting the Contributes know about bugs or problems you're having is on the page at GitHub.
 
 ## Contributing
 
