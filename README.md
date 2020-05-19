@@ -1,6 +1,6 @@
 # FiSeo
 
-This gem provides a easier solution to search engine optimization(SEO) in a ruby project. This will give you the seo capabilities to your static pages and dynamic pages alike with few lines of code.
+This gem provides a easier solution to search engine optimization(SEO) in a rails project. This will give you the seo capabilities to your static pages and dynamic pages alike with few lines of code.
 Also site maps are essential to the SEO of your web application. So this gem gives that capabilities with a feature to integrate google analytics.
 
 This gem currently integrate with the Active Admin for management of the gem. Dynamic pages and other settings also include with the integration.
@@ -33,7 +33,7 @@ And then execute:
     
 After updating your bundle, run the migration as follows:
 
-    $ acts_as_seoable:migrate
+    $ rails g acts_as_seoable:migrate
     $ rails db:migrate
     
 ## Usage
