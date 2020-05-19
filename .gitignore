@@ -7,5 +7,9 @@
 /spec/reports/
 /tmp/
 
+# Remove .idea files from project (specified for JetBrains RubyMine)
+.idea/
+*.iml
+
 # rspec failure tracking
 .rspec_status

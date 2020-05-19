@@ -1,0 +1,31 @@
+if defined?(seoable)
+    unless seoable.nil?
+        if action.to_s == 'show' && seoable.present? && seoable.dynamic_seo.present?
+            panel 'Dynamic SEO Information' do
+                attributes_table_for seoable.dynamic_seo do
+                  row 'Title' do
+                    seoable.dynamic_seo.title
+                  end
+                  row 'Description' do
+                    seoable.dynamic_seo.description
+                  end
+                  row 'Keywords' do
+                    seoable.dynamic_seo.keywords
+                  end
+                end
+            end
+        elsif action.to_s == 'edit' && seoable.object.dynamic_seo.present?
+            seoable.inputs 'Dynamic SEO Information', for: [:dynamic_seo, seoable.object.dynamic_seo] do |dynamic_seo|
+                dynamic_seo.input :title
+                dynamic_seo.input :description
+                dynamic_seo.input :keywords
+            end
+        elsif action.to_s == 'new'
+            seoable.inputs 'Dynamic SEO Information', for: [:dynamic_seo, seoable.object.dynamic_seo || DynamicSeo.new] do |dynamic_seo|
+                dynamic_seo.input :title
+                dynamic_seo.input :description
+                dynamic_seo.input :keywords
+            end
+        end
+    end
+end
