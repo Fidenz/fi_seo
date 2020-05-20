@@ -3,8 +3,8 @@ require_relative 'lib/acts_as_seoable/version'
 Gem::Specification.new do |spec|
   spec.name          = 'fi_seo'
   spec.version       = FiSeo::VERSION
-  spec.authors       = ['Banura Randika']
-  spec.email         = ['info@fidenz.com', 'tech@fidenz.com', 'banura.r@fidenz.com']
+  spec.authors       = ['Fidenz']
+  spec.email         = ['info@fidenz.com']
 
   spec.summary       = 'Flexible SEO solution for rails projects'
   spec.description   = 'This gem provides a easier solution to search engine optimization(SEO) in a rails project. This will give you the seo capabilities to your static pages and dynamic pages alike with few lines of code.
