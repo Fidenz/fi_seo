@@ -6,5 +6,5 @@ gemspec
 gem 'rake', '~> 12.0'
 gem 'rspec', '~> 3.0'
 gem 'meta-tags', '~> 2.13'
-gem 'activerecord'
+gem 'activerecord', '>= 5.0', '< 6.1'
 gem 'xml-sitemap', '~> 1.3', '>= 1.3.3'

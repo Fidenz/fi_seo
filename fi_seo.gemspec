@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency 'activerecord'
+  spec.add_runtime_dependency 'activerecord', '>= 5.0', '< 6.1'
   spec.add_runtime_dependency 'meta-tags', '~> 2.13'
   spec.add_runtime_dependency 'xml-sitemap', '~> 1.3', '>= 1.3.3'
 end

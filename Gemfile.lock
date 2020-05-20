@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    fi_seo (0.1.2)
-      activerecord
+    fi_seo (0.1.3)
+      activerecord (>= 5.0, < 6.1)
       meta-tags (~> 2.13)
       xml-sitemap (~> 1.3, >= 1.3.3)
 
@@ -82,7 +82,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord
+  activerecord (>= 5.0, < 6.1)
   fi_seo!
   meta-tags (~> 2.13)
   rake (~> 12.0)
