@@ -181,6 +181,13 @@ def show
   set_meta_tags @user
 end
 ```
+
+For adding dynamic meta tags for existing records please run following:
+
+```ruby
+Model.find_each(&:save)
+```
+
 ### Sitemap
 
 For sitemap you need to configure as follows:
