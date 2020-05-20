@@ -206,20 +206,20 @@ There are few initializers and generators for this gem to help you to configure 
 
 Before using the gem you need to migrate the tables for gem to databalse. To get the migration run the following code:
 ```bash
-$ acts_as_seoable:migrate
+$ rails g acts_as_seoable:migrate
 ```
 #### Gem Initializer
 This initializer will give ability to set few social configuration and website name for seo and few other things.
 Run the following code for to create initializer:
 ```bash
-$ acts_as_seoable:install
+$ rails g acts_as_seoable:install
 ```
 #### Active Admin Page
 *Only if you are using active admin*
 
 To add SEO data to active admin you need to run following code. This will generate a admin page:
 ```bash
-$ acts_as_seoable:admin
+$ rails g acts_as_seoable:admin
 ```
 
 #### Active Admin View Helper
@@ -227,7 +227,7 @@ $ acts_as_seoable:admin
 
 To add active admin view helper you need to run following code. This will generate a **arb** file to add dynamic pages show and edit action:
 ```bash
-$ acts_as_seoable:admin_view_helper
+$ rails g acts_as_seoable:admin_view_helper
 ```
 
 ### Active Admin
