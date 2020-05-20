@@ -125,7 +125,7 @@ If the model has attributes for that you need to use for the seoable attributes 
 acts_as_seoable :title_seoable, :description, :keywords
 
 def title_seoable
-"#{self.name}#{self.id}"
+  "#{self.name}#{self.id}"
 end
 ```  
  when you create a new record from this model the gem will create a corresponding seoable record as well. Above values will be set as default values.
@@ -171,6 +171,16 @@ def twitter_tags
 end
 ```
 
+For adding dynamic tags to frontend please add meta tags as follows:
+
+```ruby
+# some_controller.rb
+
+def show
+  @user = User.find(params[:id])
+  set_meta_tags @user
+end
+```
 ### Sitemap
 
 For sitemap you need to configure as follows:
