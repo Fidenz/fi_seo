@@ -159,7 +159,7 @@ module FiSeo
           self.create_dynamic_seo_record
         else
           DynamicSeo.where(seoable_type: self.class.to_s).where(seoable_id: self.id)
-                    .update_all(title: self.title_value, description: self.description_value, keywords: self.keywords_value)
+                    .update_all(title: self.dynamic_seo.title, description: self.dynamic_seo.description, keywords: self.dynamic_seo.keywords)
         end
       end
     end
