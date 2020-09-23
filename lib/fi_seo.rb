@@ -192,7 +192,7 @@ module FiSeo
       if self&.dynamic_seo&.title.present?
         self.dynamic_seo.title
       else
-        self.send(self.class.seoable_fields.first)
+        self.send(self.class.seoable_fields.first) || ''
       end
     end
 
@@ -200,7 +200,7 @@ module FiSeo
       if self&.dynamic_seo&.description.present?
         self.dynamic_seo.description
       else
-        self.send(self.class.seoable_fields.second)
+        self.send(self.class.seoable_fields.second) || ''
       end
     end
 
@@ -208,7 +208,7 @@ module FiSeo
       if self&.dynamic_seo&.keywords.present?
         self.dynamic_seo.keywords
       else
-        self.send(self.class.seoable_fields.third)
+        self.send(self.class.seoable_fields.third) || ''
       end
     end
   end
