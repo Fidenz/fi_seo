@@ -12,6 +12,7 @@ ActiveAdmin.register StaticSeo do
     attributes_table do
       row('Controller', &:seoable_controller)
       row('Action', &:seoable_action)
+      row('Slug', &:slug)
       row :title
       row :description
       row :keywords
@@ -38,6 +39,9 @@ ActiveAdmin.register StaticSeo do
     column 'Action' do |static_seo|
       static_seo.seoable_action.titleize
     end
+    column 'Slug' do |static_seo|
+      static_seo.slug
+    end
     column :title
     column :created_at
     column :updated_at
@@ -48,6 +52,7 @@ ActiveAdmin.register StaticSeo do
     f.inputs do
       f.input :seoable_controller, input_html: { readonly: true }
       f.input :seoable_action, input_html: { readonly: true }
+      f.input :slug, input_html: { readonly: true }
       f.input :title
       f.input :description
       f.input :keywords
