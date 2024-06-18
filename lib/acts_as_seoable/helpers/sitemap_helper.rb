@@ -26,7 +26,18 @@ module SitemapClassMethods
     SitemapSeo.all.each do |sitemap_seo|
       next if row_routes.include? sitemap_seo
 
-      sitemap_seo.delete
+      sitemap_seo.delete unless sitemap_seo.custom_page_controller?
+    end
+  end
+
+  def create_sitemap_seo_records_for_custom_pages
+    custom_page_static_seos = StaticSeo.where.not(slug: nil)
+
+    custom_page_static_seos.each do |static_seo|
+      unless SitemapSeo.find_by(sitemap_action: static_seo.slug).present?
+        new_row = SitemapSeo.create(sitemap_controller: 'custom_page', sitemap_action: static_seo.slug,
+                                      status: false, static: true)
+      end
     end
   end
 end
