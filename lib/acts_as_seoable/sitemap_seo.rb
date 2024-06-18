@@ -7,4 +7,8 @@ class SitemapSeo < ActiveRecord::Base
 
 
   enum period: { not_available: 0, always: 1, hourly: 2, daily: 3, weekly: 4, monthly: 5,yearly: 6, never: 7 }
+
+  def custom_page_controller?
+    sitemap_controller == 'custom_page'
+  end
 end
