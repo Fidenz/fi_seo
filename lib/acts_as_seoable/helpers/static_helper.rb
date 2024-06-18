@@ -28,8 +28,21 @@ module ActsAsSeoableStaticClassMethods
     end
   end
 
-  def create_static_meta_tags(controller_name, action_name, _options = {})
+  def create_static_seo_records_for_custom_page_controller
+    custom_pages = Page.all if (defined? Page).present?
+    
+    custom_pages.each do |custom_page|
+      unless StaticSeo.find_by(slug: custom_page.slug).present?
+        StaticSeo.create(seoable_controller: 'custom_page', seoable_action: 'show', slug: custom_page.slug,
+                         title: '', description: '', keywords: '', status: false)
+      end
+    end
+  end
+
+  def create_static_meta_tags(controller_name, action_name, custom_page_slug = '', _options = {})
     FiSeo::create_static_seo_records
+
+    FiSeo::create_static_seo_records_for_custom_page_controller if custom_page_slug.present?
 
     configuration = { reverse: false,
                       lowercase: false,
@@ -42,8 +55,15 @@ module ActsAsSeoableStaticClassMethods
                       canonical: false,
                       canonical_url: '',
                       social: false }
+
     configuration.update(_options) if _options.present?
-    row = StaticSeo.find_by_seoable_controller_and_seoable_action(controller_name, action_name)
+
+    row = if custom_page_slug.present?
+            StaticSeo.find_by(slug: custom_page_slug)
+          else
+            StaticSeo.find_by_seoable_controller_and_seoable_action(controller_name, action_name)
+          end
+
     hash = if row.nil? || (row && row.status == false)
              {
                title: '',
