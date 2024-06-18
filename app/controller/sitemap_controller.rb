@@ -6,6 +6,8 @@ class SitemapController < ApplicationController
 
   def sitemap
     FiSeo::create_sitemap_seo_records
+    FiSeo::create_sitemap_seo_records_for_custom_pages
+
     class_names = ActiveRecord::Base.connection.tables.map do |model|
       model
     end
@@ -44,6 +46,8 @@ class SitemapController < ApplicationController
             m.add(url_for(controller: controller, action: action, only_path: true),
                   priority: priority, updated: Date.today, period: period_sym)
           end
+        elsif site_map_seo.custom_page_controller?
+          m.add "/#{action}", priority: priority, updated: Date.today, period: period_sym
         elsif %w[destroy update create].exclude? action
           m.add(url_for(controller: controller, action: action, only_path: true),
                 priority: priority, updated: Date.today, period: period_sym)
