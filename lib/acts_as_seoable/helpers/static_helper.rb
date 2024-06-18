@@ -33,14 +33,14 @@ module ActsAsSeoableStaticClassMethods
     
     custom_pages.each do |custom_page|
       unless StaticSeo.find_by(slug: custom_page.slug).present?
-        StaticSeo.create(seoable_controller: 'custom_page', seoable_action: 'show', slug: custom_page.slug,
+        row = StaticSeo.create(seoable_controller: 'custom_page', seoable_action: custom_page.slug, slug: custom_page.slug,
                          title: '', description: '', keywords: '', status: false)
       end
     end
   end
 
-  def create_static_meta_tags(controller_name, action_name, custom_page_slug = '', _options = {})
-    FiSeo::create_static_seo_records
+  def create_static_meta_tags(controller_name, action_name, custom_page_slug = nil, _options = {})
+    FiSeo::create_static_seo_records unless custom_page_slug.present?
 
     FiSeo::create_static_seo_records_for_custom_page_controller if custom_page_slug.present?
 
