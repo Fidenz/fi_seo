@@ -13,6 +13,7 @@ class CreateSeoTables < ActiveRecord::Migration<%= migration_version %>
     create_table :static_seos do |t|
       t.string :seoable_controller, null: false
       t.string :seoable_action, null: false
+      t.string :slug, default: ''
       t.string :title, null: false, default: ''
       t.text :description, null: false, default: ''
       t.text :keywords, null: false, default: ''
