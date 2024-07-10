@@ -1,8 +1,11 @@
 
 class SitemapSeo < ActiveRecord::Base
 
-  validates_presence_of   :sitemap_action, :sitemap_controller
-  validates_uniqueness_of :sitemap_action, scope: :sitemap_controller
+  belongs_to :dynamic_seo, optional: true
+
+  validates_presence_of :route_path
+  # validates_presence_of   :sitemap_action, :sitemap_controller
+  # validates_uniqueness_of :sitemap_action, scope: :sitemap_controller
   validates_numericality_of :priority, greater_than_or_equal_to: 0, less_than_or_equal_to: 1
 
 

@@ -14,6 +14,8 @@ module ActsAsSeoable
       end
 
       def copy_migrations
+        migration_template 'migration_update.erb',
+                           'db/migrate/update_seo_tables.rb', migration_version: migration_version
         migration_template 'migration.erb',
                            'db/migrate/create_seo_tables.rb', migration_version: migration_version
       end

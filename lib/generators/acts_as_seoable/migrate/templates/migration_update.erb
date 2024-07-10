@@ -1,0 +1,10 @@
+class UpdateSeoTables < ActiveRecord::Migration<%= migration_version %>
+  def change
+    add_column :dynamic_seos, :active_sitemap, :boolean, null: false, default: true
+    add_reference :dynamic_seos, :sitemap_seo, null: true
+    add_column :sitemap_seos, :is_dynamic_page, :boolean, null: false, default: false
+    add_column :sitemap_seos, :route_path, :string, null: false, default: ""
+
+    sitemap_seos
+  end
+end

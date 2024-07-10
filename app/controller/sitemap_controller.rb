@@ -17,6 +17,7 @@ class SitemapController < ApplicationController
       SitemapSeo.where(status: true).each do |site_map_seo|
         action = site_map_seo.sitemap_action
         controller = site_map_seo.sitemap_controller
+        route_path = site_map_seo.route_path
         priority = site_map_seo.priority
         period = site_map_seo.period
         static = site_map_seo.static
@@ -27,26 +28,29 @@ class SitemapController < ApplicationController
         else
           period_sym = period.to_sym
         end
-
-        if class_names.include? controller.pluralize
-          p = controller.capitalize.singularize.camelize
-          if Object.const_defined?(p) && (%w[destroy update create index new].exclude? action) && p.constantize.any? && !static
-            p.constantize.all.each do |record|
-              if (%w[new create index].include? action)
-                m.add(url_for(controller: controller, action: action, only_path: true),
-                      priority: priority, updated: Date.today, period: period_sym)
-              else
-                m.add(url_for(controller: controller, action: action, id: record.id, only_path: true),
-                      priority: priority, updated: Date.today, period: period_sym)
+        if site_map_seo.static
+          if class_names.include? controller.pluralize
+            p = controller.capitalize.singularize.camelize
+            if Object.const_defined?(p) && (%w[destroy update create index new].exclude? action) && p.constantize.any? && !static
+              p.constantize.all.each do |record|
+                if (%w[new create index].include? action)
+                  m.add(url_for(controller: controller, action: action, only_path: true),
+                        priority: priority, updated: Date.today, period: period_sym)
+                else
+                  m.add(url_for(controller: controller, action: action, id: record.id, only_path: true),
+                        priority: priority, updated: Date.today, period: period_sym)
+                end
               end
+            elsif %w[destroy update create].exclude? action
+              m.add(url_for(controller: controller, action: action, only_path: true),
+                    priority: priority, updated: Date.today, period: period_sym)
             end
           elsif %w[destroy update create].exclude? action
             m.add(url_for(controller: controller, action: action, only_path: true),
                   priority: priority, updated: Date.today, period: period_sym)
           end
-        elsif %w[destroy update create].exclude? action
-          m.add(url_for(controller: controller, action: action, only_path: true),
-                priority: priority, updated: Date.today, period: period_sym)
+        else
+          m.add "#{route_path}", priority: priority, updated: Date.today, period: period_sym
         end
       end
     end

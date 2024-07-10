@@ -69,11 +69,11 @@ module FiSeo
 
   module ClassMethods
 
-    def acts_as_seoable(title, description, keywords, _options = {})
+    def acts_as_seoable(title, description, keywords, active_sitemap, _options = {})
       extend  ActsAsSeoableClassMethods
       include ActsAsSeoableInstanceMethods
 
-      attr_names = [title, description, keywords]
+      attr_names = [title, description, keywords, active_sitemap]
       configuration = { check_for_changes: true,
                         reverse: false,
                         lowercase: false,
@@ -93,7 +93,7 @@ module FiSeo
 
       self.send('after_create', :create_dynamic_seo_record)
       self.send('after_update', :update_dynamic_seo_record)
-      self.send('has_one', :dynamic_seo, as: :seoable, dependent: :delete)
+      self.send('has_one', :dynamic_seo, as: :seoable, dependent: :destroy)
       self.send('accepts_nested_attributes_for', :dynamic_seo)
     end
   end
@@ -148,8 +148,14 @@ module FiSeo
 
 
     def create_dynamic_seo_record
-      DynamicSeo.create(seoable_type: self.class.to_s, seoable_id: id, title: self.title_value,
-                        description: self.description_value, keywords: self.keywords_value)
+      dynamic_seo = DynamicSeo.create(seoable_type: self.class.to_s, seoable_id: id, title: self.title_value,
+                        description: self.description_value, keywords: self.keywords_value, active_sitemap: self.active_sitemap_value)
+
+      sitemap_seo = SitemapSeo.new
+      sitemap_seo.route_path = "/#{self.slug}"
+      sitemap_seo.dynamic_seo_id = dynamic_seo.id
+      sitemap_seo.status = self.active_sitemap_value
+      sitemap_seo.save!
     end
 
     def update_dynamic_seo_record
@@ -159,7 +165,21 @@ module FiSeo
           self.create_dynamic_seo_record
         else
           DynamicSeo.where(seoable_type: self.class.to_s).where(seoable_id: self.id)
-                    .update_all(title: self.title_value, description: self.description_value, keywords: self.keywords_value)
+                    .update_all(title: self.title_value, description: self.description_value, keywords: self.keywords_value, active_sitemap: self.active_sitemap_value)
+
+          dynamic_seo = DynamicSeo.where(seoable_type: self.class.to_s).where(seoable_id: self.id).first
+
+          if dynamic_seo.sitemap_seo
+            dynamic_seo.sitemap_seo.route_path = "/#{self.slug}"
+            dynamic_seo.sitemap_seo.status = self.active_sitemap_value
+            dynamic_seo.sitemap_seo.save!
+          else
+            sitemap_seo = SitemapSeo.new
+            sitemap_seo.route_path = "/#{self.slug}"
+            sitemap_seo.dynamic_seo_id = dynamic_seo.id
+            sitemap_seo.status = self.active_sitemap_value
+            sitemap_seo.save!
+          end
         end
       end
     end
@@ -209,6 +229,14 @@ module FiSeo
         self.dynamic_seo.keywords
       else
         self.send(self.class.seoable_fields.third) || ''
+      end
+    end
+
+    def active_sitemap_value
+      if self&.dynamic_seo&.active_sitemap
+        self.dynamic_seo.active_sitemap
+      else
+        self.send(self.class.seoable_fields.fourth) || ''
       end
     end
   end

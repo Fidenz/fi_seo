@@ -19,12 +19,14 @@ if defined?(seoable)
                 dynamic_seo.input :title
                 dynamic_seo.input :description
                 dynamic_seo.input :keywords
+                dynamic_seo.input :active_sitemap
             end
         elsif action.to_s == 'new'
             seoable.inputs 'Dynamic SEO Information', for: [:dynamic_seo, seoable.object.dynamic_seo || DynamicSeo.new] do |dynamic_seo|
                 dynamic_seo.input :title
                 dynamic_seo.input :description
                 dynamic_seo.input :keywords
+                dynamic_seo.input :active_sitemap
             end
         end
     end

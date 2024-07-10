@@ -12,18 +12,21 @@ module SitemapClassMethods
       
       static = route.defaults[:static] == true
       row = SitemapSeo.find_by_sitemap_controller_and_sitemap_action(route.defaults[:controller], route.defaults[:action])
+
       if row.nil?
         new_row = SitemapSeo.create(sitemap_controller: route.defaults[:controller], sitemap_action: route.defaults[:action],
-                                    status: false, static: static)
+                                    status: false, static: static, route_path: route.path.spec.to_s)
+
+        route.path.spec.to_s
         row_routes << new_row
       else
-        row.update(static: static)
+        row.update(static: static, route_path: route.path.spec.to_s)
         row.save
         row_routes << row
       end
     end
 
-    SitemapSeo.all.each do |sitemap_seo|
+    SitemapSeo.where(static: true).all.each do |sitemap_seo|
       next if row_routes.include? sitemap_seo
 
       sitemap_seo.delete

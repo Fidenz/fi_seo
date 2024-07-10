@@ -175,10 +175,13 @@ ActiveAdmin.register SitemapSeo do
   
   index title: 'Sitemap Seo' do
     column 'Controller' do |sitemap_seo|
-      sitemap_seo.sitemap_controller.titleize
+      sitemap_seo.sitemap_controller.nil? ? "" : sitemap_seo.sitemap_controller.titleize
     end
     column 'Action' do |sitemap_seo|
-      sitemap_seo.sitemap_action.titleize
+      sitemap_seo.sitemap_action.nil? ? "" : sitemap_seo.sitemap_action.titleize
+    end
+    column 'Route' do |sitemap_seo|
+      sitemap_seo.route_path.nil? ? "" : sitemap_seo.route_path.downcase
     end
     column :priority
     column 'Period' do |sitemap_seo|
