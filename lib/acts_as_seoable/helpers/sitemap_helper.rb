@@ -14,12 +14,14 @@ module SitemapClassMethods
       row = SitemapSeo.find_by_sitemap_controller_and_sitemap_action(route.defaults[:controller], route.defaults[:action])
 
       if row.nil?
+        byebug
         new_row = SitemapSeo.create(sitemap_controller: route.defaults[:controller], sitemap_action: route.defaults[:action],
                                     status: false, static: static, route_path: route.path.spec.to_s)
 
         route.path.spec.to_s
         row_routes << new_row
       else
+        byebug
         row.update(static: static, route_path: route.path.spec.to_s)
         row.save
         row_routes << row
